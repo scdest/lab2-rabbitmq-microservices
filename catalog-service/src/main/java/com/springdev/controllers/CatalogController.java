@@ -15,7 +15,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,9 +42,7 @@ public class CatalogController {
     @Operation(summary = "Create or update a product", description = "Creates or updates a product in the catalog.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Product created or updated successfully.",
-                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Product.class)) }),
-            @ApiResponse(responseCode = "400", description = "Invalid input parameters.",
-                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)) })
+                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Product.class)) })
     })
     @PostMapping
     public ResponseEntity<Product> createOrUpdateProduct(
@@ -62,8 +59,8 @@ public class CatalogController {
                     content = { @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Product.class))) })
     })
     @GetMapping
-    public List<Product> findByCategory(
+    public ResponseEntity<List<Product>> findByCategory(
             @Parameter(description = "Category of the products to be retrieved.", required = true, example = "Electronics") @RequestParam String category) {
-        return productRepository.findByCategory(category);
+        return ResponseEntity.ok(productRepository.findByCategory(category));
     }
 }

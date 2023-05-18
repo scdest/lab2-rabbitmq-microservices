@@ -1,0 +1,4 @@
+# Project exclude paths
+/catalog-service/target/
+/orders-service/target/
+/user-service/target/
